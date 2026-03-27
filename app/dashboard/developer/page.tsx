@@ -302,25 +302,25 @@ const canVerify = await sdk.access.hasRole(
             <Card className="glass-card border-white/5 overflow-hidden">
                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                   <CardHeader className="p-0">
-                     <div className="px-6 pt-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+                     <div className="px-6 pt-6 flex flex-col md:flex-row md:items-start lg:items-center justify-between gap-4 border-b border-white/5 pb-4">
                         <div>
                           <CardTitle className="text-xl font-bold">SDK Method Explorer</CardTitle>
-                          <CardDescription>Select a service to see boilerplate code and test logic.</CardDescription>
+                          <CardDescription className="text-xs mt-1">Select a service to see boilerplate code and test logic.</CardDescription>
                         </div>
-                        <TabsList className="bg-black/40 border border-white/5 h-10 p-1 rounded-lg">
-                          <TabsTrigger value="register" className="text-[10px] font-bold px-4">Register</TabsTrigger>
-                          <TabsTrigger value="verify" className="text-[10px] font-bold px-4">Verify</TabsTrigger>
-                          <TabsTrigger value="audit" className="text-[10px] font-bold px-4">Audit</TabsTrigger>
-                          <TabsTrigger value="permissions" className="text-[10px] font-bold px-4">Access</TabsTrigger>
+                        <TabsList className="bg-black/40 border border-white/5 h-auto p-1 rounded-lg flex flex-wrap justify-start">
+                          <TabsTrigger value="register" className="text-[10px] font-bold px-3 py-1.5 h-auto">Register</TabsTrigger>
+                          <TabsTrigger value="verify" className="text-[10px] font-bold px-3 py-1.5 h-auto">Verify</TabsTrigger>
+                          <TabsTrigger value="audit" className="text-[10px] font-bold px-3 py-1.5 h-auto">Audit</TabsTrigger>
+                          <TabsTrigger value="permissions" className="text-[10px] font-bold px-3 py-1.5 h-auto">Access</TabsTrigger>
                         </TabsList>
                      </div>
                   </CardHeader>
 
                   <CardContent className="p-0">
-                     <div className="grid grid-cols-1 md:grid-cols-2 h-[320px]">
+                     <div className="grid grid-cols-1 md:grid-cols-5 min-h-[320px]">
                         {/* Snippet Header */}
-                        <div className="p-6 bg-black/20 border-r border-white/5 relative group">
-                           <div className="flex items-center justify-between mb-4">
+                        <div className="p-6 bg-black/20 md:col-span-3 border-b md:border-b-0 md:border-r border-white/5 relative group flex flex-col">
+                           <div className="flex items-center justify-between mb-4 shrink-0">
                               <div className="flex items-center gap-2">
                                  <Code2 className="w-4 h-4 text-primary" />
                                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground/30">Snippet Preview</span>
@@ -329,21 +329,21 @@ const canVerify = await sdk.access.hasRole(
                                 variant="ghost" 
                                 size="icon" 
                                 onClick={handleCopyCode}
-                                className="h-7 w-7 bg-white/5 border border-white/5 rounded-md hover:bg-white/10"
+                                className="h-7 w-7 bg-white/5 border border-white/5 rounded-md hover:bg-white/10 shrink-0"
                               >
                                 {copied ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
                               </Button>
                            </div>
-                           <pre className="text-xs font-mono text-green-400 leading-relaxed overflow-auto scrollbar-hide h-[200px]">
+                           <pre className="text-[11px] md:text-xs font-mono text-green-400 leading-relaxed overflow-x-auto scrollbar-hide flex-1">
                               <code>{snippets[activeTab]}</code>
                            </pre>
                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                         </div>
 
                         {/* Interactive Sandbox Logic */}
-                        <div className="p-8 flex flex-col justify-center bg-black/40">
-                           <h3 className="text-lg font-bold mb-2">Interactive Preview</h3>
-                           <p className="text-sm text-foreground/40 mb-6 font-medium">
+                        <div className="p-6 md:p-8 flex flex-col justify-center bg-black/40 md:col-span-2">
+                           <h3 className="text-base md:text-lg font-bold mb-2">Interactive Preview</h3>
+                           <p className="text-xs text-foreground/40 mb-6 font-medium leading-relaxed">
                               Trigger a mock simulation to see how the SDK handles this method internally.
                            </p>
                            
@@ -351,12 +351,12 @@ const canVerify = await sdk.access.hasRole(
                               onClick={runSimulation}
                               disabled={isSimulating || !isInitialized}
                               className={cn(
-                                "w-full h-12 rounded-xl transition-all duration-300 font-bold gap-2",
+                                "w-full h-11 md:h-12 rounded-xl transition-all duration-300 font-bold gap-2 text-[10px] sm:text-[11px] md:text-xs px-2 whitespace-nowrap",
                                 isSimulating ? "bg-white/5 text-white/20 border border-white/5" : "bg-primary text-white neon-glow"
                               )}
                            >
-                              {isSimulating ? <Activity className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-                              {isSimulating ? "Processing SDK Logic..." : `Simulate ${activeTab.toUpperCase()}`}
+                              {isSimulating ? <Activity className="w-4 h-4 animate-spin shrink-0" /> : <Play className="w-4 h-4 shrink-0" />}
+                              <span className="truncate">{isSimulating ? "Processing..." : `Simulate ${activeTab.toUpperCase()}`}</span>
                            </Button>
                         </div>
                      </div>
