@@ -45,7 +45,8 @@ const sdk = new DNAProofSDK({
     accessControlAddress: process.env.NEXT_PUBLIC_AC_ADDRESS
   },
   ipfs: {
-    gatewayUrl: "https://ipfs.infura.io:5001"
+    gatewayUrl: "https://api.pinata.cloud/psa",
+    authHeader: \`Bearer \${process.env.PINATA_JWT}\`
   }
 });
 
@@ -155,7 +156,7 @@ console.log(\`Success! Hash: \${hash}\`);`;
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { name: "Ethereum", detail: "Ethers v6", status: "online", color: "blue" },
-                    { name: "IPFS", detail: "Gateway V3", status: "online", color: "cyan" },
+                    { name: "IPFS", detail: "Pinata Cloud", status: "online", color: "cyan" },
                     { name: "Hyperledger", detail: "Fabric V2", status: "offline", color: "red" },
                     { name: "AccessControl", detail: "RBAC Module", status: "active", color: "primary" },
                   ].map((s) => (
