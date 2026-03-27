@@ -36,7 +36,10 @@ export async function apiRequest(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(url, {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+  const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
+
+  const res = await fetch(fullUrl, {
     method,
     headers,
     body: data ? (isFormData ? (data as FormData) : JSON.stringify(data)) : undefined,
@@ -59,7 +62,10 @@ export const getQueryFn: <T>(options: {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const res = await fetch(queryKey[0] as string, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    const fullUrl = (queryKey[0] as string).startsWith('http') ? (queryKey[0] as string) : `${baseUrl}${queryKey[0]}`;
+
+    const res = await fetch(fullUrl, {
       headers,
       credentials: "include",
     });

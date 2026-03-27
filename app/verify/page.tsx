@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import React, { useEffect, useState, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { ShieldCheck, ShieldAlert, History, FileText, Lock, ExternalLink, Loader2, Fingerprint, Search, Download, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -14,12 +14,13 @@ import { FileUpload } from "@/components/forms/FileUpload"
 import { useWallet } from "@/context/WalletContext"; // Ensure useWallet is imported
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 // Removed REGISTRY_ADDRESS and REGISTRY_ABI as they are handled by contractService
 
-export default function PublicVerificationPage() {
-  const params = useParams()
-  const hash = params.hash as string
+function VerificationContent() {
+  const searchParams = useSearchParams()
+  const hash = searchParams.get("hash")
 
   const [isVerifying, setIsVerifying] = useState(true)
   const [result, setResult] = useState<any>(null)
@@ -105,7 +106,7 @@ export default function PublicVerificationPage() {
 
         // Try to fetch DB record for deeper comparison if needed
         try {
-          const res = await fetch(`/api/documents/hash/${hash}`);
+          const res = await apiRequest('GET', `/api/documents/hash/${hash}`);
           if (res.ok) {
             const docDb = await res.json();
             dbIssuedTo = docDb.issuedTo;
@@ -149,7 +150,7 @@ export default function PublicVerificationPage() {
 
         // Increment Quota (Async) if using quota to verify
         if (walletInfo?.address && !isAdmin && !isApprovedIssuer && hasQuota) {
-           fetch(`/api/users/verifications/increment/${walletInfo.address}`, { method: 'POST' })
+           apiRequest('POST', `/api/users/verifications/increment/${walletInfo.address}`)
              .then(() => refreshUser())
              .catch(e => console.warn("Quota increment failed", e));
         }
@@ -181,7 +182,7 @@ export default function PublicVerificationPage() {
         const parsedJson = JSON.parse(text);
         
         if (parsedJson && parsedJson.credentialSubject) {
-          const res = await fetch(`/api/documents/hash/${hash}`);
+          const res = await apiRequest('GET', `/api/documents/hash/${hash}`);
           if (res.ok) {
             const docDb = await res.json();
             const fetchedOriginal = docDb.fieldData || {};
@@ -543,5 +544,17 @@ export default function PublicVerificationPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function PublicVerificationPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#0B0F19] text-white flex items-center justify-center p-4 sm:p-8 font-sans">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    }>
+      <VerificationContent />
+    </Suspense>
   )
 }

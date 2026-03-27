@@ -1,15 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://127.0.0.1:5001/api/:path*',
-      },
-    ];
+  output: 'export',
+  images: {
+    unoptimized: true,
   },
-  // Ensure we can use framer-motion and other client-side libs
   reactStrictMode: true,
+  transpilePackages: ['@dnaproof/sdk'],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        dns: false,
+        net: false,
+        tls: false,
+        fs: false,
+        path: false,
+        os: false,
+        child_process: false,
+        electron: false,
+        http2: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[69520,["7486","static/chunks/7486-f9cd9288fc7ecd62.js","6758","static/chunks/6758-bd10ef1bf59fd577.js","7177","static/chunks/app/layout-8e0545c0570ebc6f.js"],"Providers"]
+3:I[57121,[],""]
+4:I[74581,[],""]
+:HL["/_next/static/css/29f19619f6568443.css","style"]
+:HL["/_next/static/css/8ce6b443d252e8c2.css","style"]
+0:{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/29f19619f6568443.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/8ce6b443d252e8c2.css","precedence":"next"}]],["$","html",null,{"lang":"en","className":"font-sans __variable_188709","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__className_f367f3","children":["$","$L2",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","template":["$","$L4",null,{}]}]}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"CKu6jevrU-CIZAvTLy8Yu"}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DNAProof</string>
+    <string name="title_activity_main">DNAProof</string>
+    <string name="package_name">com.dnaproof.app</string>
+    <string name="custom_url_scheme">com.dnaproof.app</string>
+</resources>

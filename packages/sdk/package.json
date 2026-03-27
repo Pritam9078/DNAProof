@@ -1,0 +1,57 @@
+{
+  "name": "@dnaproof/sdk",
+  "version": "0.1.0",
+  "description": "Production-grade SDK for DNAProof (Ethereum + Fabric + IPFS)",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "browser": {
+    "fabric-network": false,
+    "fabric-ca-client": false,
+    "dns": false,
+    "net": false,
+    "tls": false,
+    "http2": false,
+    "fs": false,
+    "path": false,
+    "os": false,
+    "electron": false,
+    "child_process": false,
+    "constants": false
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --watch --dts",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "keywords": [
+    "dnaproof",
+    "ethereum",
+    "fabric",
+    "ipfs",
+    "sdk",
+    "web3"
+  ],
+  "author": "DNAProof Team",
+  "license": "MIT",
+  "dependencies": {
+    "ethers": "^6.13.5",
+    "fabric-network": "^2.2.20",
+    "fabric-ca-client": "^2.2.20",
+    "ipfs-http-client": "^60.0.1",
+    "canonical-json": "^0.4.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "eslint": "^9.14.0",
+    "@types/jest": "^29.5.14"
+  }
+}

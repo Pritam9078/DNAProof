@@ -201,7 +201,7 @@ router.post("/register-document", authenticateToken, upload.single('file'), asyn
       cid: ipfsCid,
     });
 
-    const verificationUrl = `${APP_BASE_URL}/verify/${fileHash}`;
+    const verificationUrl = `${APP_BASE_URL}/verify?hash=${fileHash}`;
     const qrCode = await QRCode.toDataURL(verificationUrl, {
       errorCorrectionLevel: 'H',
       width: 300,

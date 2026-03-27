@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
 import { useWallet } from "@/context/WalletContext";
+import { apiRequest } from "@/lib/queryClient";
 
 interface PricingPlan {
   id: string;
@@ -99,10 +100,9 @@ export const PricingSection = ({ onSelect }: { onSelect?: (plan: PricingPlan) =>
       await tx.wait();
 
       // Trigger Backend Upgrade
-      const res = await fetch(`/api/users/plan/upgrade/${walletInfo.address}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: plan.id, paymentTxHash: tx.hash })
+      const res = await apiRequest('POST', `/api/users/plan/upgrade/${walletInfo.address}`, {
+        plan: plan.id,
+        paymentTxHash: tx.hash
       });
 
       if (res.ok) {

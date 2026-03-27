@@ -8,6 +8,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 
+import { apiRequest } from '@/lib/queryClient';
+
 interface Notification {
   _id: string;
   type: string;
@@ -38,11 +40,7 @@ export default function NotificationBell() {
     if (!address) return;
     try {
       const role = getActiveRole();
-      const res = await fetch(`/api/notifications/${address}?role=${role || ''}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
-      });
+      const res = await apiRequest('GET', `/api/notifications/${address}?role=${role || ''}`);
       if (res.ok) {
         const data = await res.json();
         setNotifications(data);
@@ -79,12 +77,7 @@ export default function NotificationBell() {
 
   const markAsRead = async (id: string) => {
     try {
-      const res = await fetch(`/api/notifications/${id}/read`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
-      });
+      const res = await apiRequest('PATCH', `/api/notifications/${id}/read`);
       if (res.ok) {
         setNotifications(prev => 
           prev.map(n => n._id === id ? { ...n, isRead: true } : n)
@@ -97,12 +90,7 @@ export default function NotificationBell() {
 
   const deleteNotification = async (id: string) => {
     try {
-      const res = await fetch(`/api/notifications/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
-      });
+      const res = await apiRequest('DELETE', `/api/notifications/${id}`);
       if (res.ok) {
         setNotifications(prev => prev.filter(n => n._id !== id));
       }

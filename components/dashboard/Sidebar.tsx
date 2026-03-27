@@ -20,6 +20,7 @@ import {
   Users,
   ChevronDown,
   CreditCard,
+  Terminal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -83,6 +84,7 @@ export const Sidebar = () => {
     { icon: Shield, label: "Apply for Access", href: "/dashboard/apply", show: connected && !isApproved },
     { icon: CreditCard, label: "Pricing", href: "/dashboard/pricing", show: connected && !isApproved },
     { icon: UserCircle, label: "Profile", href: "/dashboard/profile", show: connected },
+    { icon: Terminal, label: "Developer Toolkit", href: "/dashboard/developer", show: connected },
     { icon: Settings, label: "Settings", href: "/dashboard/settings", show: connected },
   ].filter(item => item.show);
 

@@ -100,9 +100,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
           const token = localStorage.getItem("auth_token");
           if (token) {
             try {
-              const res = await fetch("/api/auth/me", {
-                headers: { "Authorization": `Bearer ${token}` }
-              });
+              const res = await apiRequest("GET", "/api/auth/me");
               if (res.ok) {
                 setIsAuthenticated(true);
               } else {
@@ -160,8 +158,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   // Try to create a user if they don't exist yet
   const tryCreateUser = async (address: string) => {
     try {
-      // First check if the user already exists
-      const checkResponse = await fetch(`/api/users/wallet/${address}`);
+      // First check if the user already exists (using apiRequest)
+      const checkResponse = await apiRequest("GET", `/api/users/wallet/${address}`);
       
       if (checkResponse.ok) {
         return await checkResponse.json();
@@ -318,11 +316,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
       // Authenticate with backend
       toast.loading("Requesting authentication nonce...", { id: "auth-step" });
-      const loginRes = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address })
-      });
+      const loginRes = await apiRequest("POST", "/api/auth/login", { address });
       
       if (loginRes.status === 429) {
         throw new Error("Too many authentication attempts. Please try again later.");
@@ -342,11 +336,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       }
 
       toast.loading("Verifying signature...", { id: "auth-step" });
-      const verifyRes = await fetch("/api/auth/verify-signature", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, signature })
-      });
+      const verifyRes = await apiRequest("POST", "/api/auth/verify-signature", { address, signature });
 
       if (!verifyRes.ok) {
         const errorData = await verifyRes.json();

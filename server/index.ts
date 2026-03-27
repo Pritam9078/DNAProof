@@ -1,11 +1,19 @@
 import 'dotenv/config';
 
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import { registerRoutes } from "./routes.ts";
 import { log } from "./vite.ts";
 import { setupBlockchainListeners } from "./blockchain-listeners.ts";
 
 const app = express();
+
+// Enable CORS
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || "http://localhost:3002",
+  credentials: true
+}));
+
 // Increase size limits for file uploads (100MB)
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));

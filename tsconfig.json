@@ -8,6 +8,7 @@
     "client/src/**/*",
     "shared/**/*",
     "server/**/*",
+    "packages/sdk/src/**/*",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
@@ -45,6 +46,9 @@
       ],
       "@shared/*": [
         "./shared/*"
+      ],
+      "@dnaproof/sdk/*": [
+        "packages/sdk/src/*"
       ]
     },
     "target": "ES2017",
