@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@shared/*": ["./shared/*"]
+    }
+  },
+  "include": [
+    "server/**/*",
+    "lib/**/*",
+    "shared/**/*"
+  ],
+  "exclude": [
+    "app/**/*",
+    "client/**/*",
+    "node_modules",
+    "**/*.test.ts"
+  ]
+}
