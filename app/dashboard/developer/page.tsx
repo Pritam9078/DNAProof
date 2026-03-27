@@ -114,7 +114,7 @@ console.log(\`Success! Hash: \${hash}\`);`;
             </Button>
             <Button 
               className="gap-2 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 h-11 px-5 rounded-xl transition-all cursor-pointer"
-              onClick={() => window.open("https://github.com/Pritam9078/DNAProof", "_blank")}
+              onClick={() => window.open("https://github.com/Pritam9078/DNAProof/tree/master/packages/sdk", "_blank")}
             >
               <Github className="w-4 h-4" />
               View Source
