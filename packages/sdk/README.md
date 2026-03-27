@@ -24,7 +24,8 @@ const sdk = new DNAProofSDK({
     // ... other addresses
   },
   ipfs: {
-    gatewayUrl: "https://ipfs.infura.io:5001"
+    gatewayUrl: "https://api.pinata.cloud/psa",
+    authHeader: "Bearer YOUR_PINATA_JWT"
   }
 });
 
