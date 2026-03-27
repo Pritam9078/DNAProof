@@ -104,11 +104,18 @@ console.log(\`Success! Hash: \${hash}\`);`;
           </div>
           
           <div className="flex gap-3">
-            <Button variant="outline" className="gap-2 border-white/5 bg-white/5 hover:bg-white/10 h-11 px-5 rounded-xl">
+            <Button 
+              variant="outline" 
+              className="gap-2 border-white/5 bg-white/5 hover:bg-white/10 h-11 px-5 rounded-xl cursor-pointer"
+              onClick={() => window.open("https://github.com/Pritam9078/DNAProof/blob/master/packages/sdk/README.md", "_blank")}
+            >
               <BookOpen className="w-4 h-4 text-primary" />
               Documentation
             </Button>
-            <Button className="gap-2 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 h-11 px-5 rounded-xl transition-all">
+            <Button 
+              className="gap-2 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 h-11 px-5 rounded-xl transition-all cursor-pointer"
+              onClick={() => window.open("https://github.com/Pritam9078/DNAProof", "_blank")}
+            >
               <Github className="w-4 h-4" />
               View Source
             </Button>
