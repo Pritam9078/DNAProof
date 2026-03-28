@@ -198,9 +198,23 @@ export default function DocumentHistoryPage() {
                             )}>
                                {doc.aiAnalysis?.docType || "Processing..."}
                             </Badge>
-                            <span className="text-[10px] text-foreground/40 text-center">
-                               Risk: {doc.aiAnalysis?.riskScore || 0}%
-                            </span>
+                            <div className="flex flex-col items-center">
+                              <span className={cn(
+                                "text-[10px] font-black uppercase tracking-widest",
+                                (doc.aiAnalysis?.riskScore || 0) > 30 ? "text-red-500" : "text-foreground/40"
+                              )}>
+                                Risk: {doc.aiAnalysis?.riskScore || 0}%
+                              </span>
+                              {doc.aiAnalysis?.fraudFlags && doc.aiAnalysis.fraudFlags.length > 0 && (
+                                <div className="mt-1 flex flex-wrap gap-1 justify-center max-w-[120px]">
+                                  {doc.aiAnalysis.fraudFlags.map((flag: string, idx: number) => (
+                                    <span key={idx} className="text-[8px] bg-red-500/10 text-red-500 px-1 rounded border border-red-500/20 whitespace-normal text-center">
+                                      {flag.split(': ')[1] || flag}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                          </div>
                       </TableCell>
                        <TableCell>
