@@ -62,7 +62,7 @@ export default function NotificationBell() {
 
       const newSocket = io(socketUrl, {
         withCredentials: true,
-        transports: ['websocket', 'polling']
+        transports: ['polling', 'websocket']
       });
       setSocket(newSocket);
 

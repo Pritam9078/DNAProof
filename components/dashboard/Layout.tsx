@@ -71,7 +71,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
       <div className="transition-all duration-300 lg:pl-[280px]">
         <Topbar />
         
-        <main className="pt-24 pb-12 px-6 max-w-7xl mx-auto">
+        <main className="pt-24 pb-12 px-6 max-w-[1600px] mx-auto">
            <AnimatePresence mode="wait">
              <motion.div
                initial={{ opacity: 0, y: 10 }}

@@ -36,7 +36,16 @@ export async function apiRequest(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+  let baseUrl =  'http://localhost:5001';
+  
+  if (typeof window !== 'undefined') {
+    const { hostname, protocol } = window.location;
+    // Always prefer the current hostname to avoid CORS mismatches
+    baseUrl = `${protocol}//${hostname}:5001`;
+  } else if (process.env.NEXT_PUBLIC_API_URL) {
+    baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  }
+
   const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
 
   const res = await fetch(fullUrl, {
@@ -62,7 +71,15 @@ export const getQueryFn: <T>(options: {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    let baseUrl = 'http://localhost:5001';
+    
+    if (typeof window !== 'undefined') {
+      const { hostname, protocol } = window.location;
+      baseUrl = `${protocol}//${hostname}:5001`;
+    } else if (process.env.NEXT_PUBLIC_API_URL) {
+      baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    }
+
     const fullUrl = (queryKey[0] as string).startsWith('http') ? (queryKey[0] as string) : `${baseUrl}${queryKey[0]}`;
 
     const res = await fetch(fullUrl, {
