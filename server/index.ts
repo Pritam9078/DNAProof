@@ -8,11 +8,25 @@ import { setupBlockchainListeners } from "./blockchain-listeners.ts";
 
 const app = express();
 
-// Enable CORS
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:3002",
-  credentials: true
-}));
+// NUCLEAR CORS: Allow all origins and handle all preflights
+app.use((req, res, next) => {
+  const origin = req.headers.origin as string;
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  }
+  
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept, Cache-Control, token");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
 
 // Increase size limits for file uploads (100MB)
 app.use(express.json({ limit: '100mb' }));
@@ -42,9 +56,12 @@ app.use((req, res, next) => {
   const { Server: SocketServer } = await import('socket.io');
   const io = new SocketServer(server, {
     cors: {
-      origin: "*", // Adjust in production
-      methods: ["GET", "POST"]
-    }
+      origin: true, // true implements reflecting origin logic
+      methods: ["GET", "POST"],
+      credentials: true
+    },
+    allowEIO3: true,
+    transports: ['polling', 'websocket']
   });
 
   const { initNotificationService } = await import('./notification-service');

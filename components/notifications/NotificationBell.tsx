@@ -45,8 +45,10 @@ export default function NotificationBell() {
         const data = await res.json();
         setNotifications(data);
       }
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
+    } catch (error: any) {
+      if (!error?.message?.includes('403') && !error?.message?.includes('401')) {
+        console.error('Error fetching notifications:', error);
+      }
     }
   };
 
@@ -54,7 +56,14 @@ export default function NotificationBell() {
     if (connected && address) {
       fetchNotifications();
 
-      const newSocket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001');
+      const socketUrl = typeof window !== 'undefined' 
+        ? `${window.location.protocol}//${window.location.hostname}:5001`
+        : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+
+      const newSocket = io(socketUrl, {
+        withCredentials: true,
+        transports: ['websocket', 'polling']
+      });
       setSocket(newSocket);
 
       newSocket.on('connect', () => {

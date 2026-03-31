@@ -159,32 +159,40 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const tryCreateUser = async (address: string) => {
     try {
       // First check if the user already exists (using apiRequest)
+      // Note: apiRequest throws on non-200 responses
       const checkResponse = await apiRequest("GET", `/api/users/wallet/${address}`);
       
       if (checkResponse.ok) {
         return await checkResponse.json();
       }
-
-      // Only create a new user if they don't exist (404 status)
-      if (checkResponse.status === 404) {
-        // Create a new user with the wallet address
-        const newUser = {
-          walletAddress: address,
-          displayName: "",
-          profileImage: null,
-          preferences: JSON.stringify({
-            darkMode: true,
-            animations: true,
-            notifications: true
-          })
-        };
-        
-        const res = await apiRequest("POST", "/api/users", newUser);
-        console.log("Created new user for wallet:", address);
-        return await res.json();
+    } catch (error: any) {
+      // Correctly handle the 404 status contained in the error message
+      if (error?.message?.includes('404')) {
+        try {
+          // Create a new user with the wallet address
+          const newUser = {
+            walletAddress: address,
+            displayName: "",
+            profileImage: null,
+            preferences: JSON.stringify({
+              darkMode: true,
+              animations: true,
+              notifications: true
+            })
+          };
+          
+          const res = await apiRequest("POST", "/api/users", newUser);
+          console.log("Created new user for wallet:", address);
+          return await res.json();
+        } catch (createError) {
+          console.error("Critical error creating user after 404 check:", createError);
+        }
+      } else {
+        // Log other actual errors (unless they're expected auth errors)
+        if (!error?.message?.includes('403') && !error?.message?.includes('401')) {
+          console.error("Error checking user enrollment:", error);
+        }
       }
-    } catch (error) {
-      console.error("Error checking/creating user:", error);
     }
     return null;
   };

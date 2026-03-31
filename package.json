@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "next dev -p 3002 --webpack",
+    "dev": "next dev -p 3002 -H 0.0.0.0 --webpack",
     "server:dev": "tsx watch server/index.ts",
     "dev:all": "concurrently \"npm run dev\" \"npm run server:dev\"",
     "build": "next build --webpack && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
