@@ -14,6 +14,11 @@ export async function registerRoutes(app: express.Express): Promise<Server> {
 
   // Basic health check
   app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
+  
+  // Friendly root route so clicking the Render URL doesn't throw a 404
+  app.get("/", (req, res) => {
+    res.status(200).send("DNAProof API is online and running successfully!");
+  });
 
   // Create and return the HTTP server
   const httpServer = createServer(app);
