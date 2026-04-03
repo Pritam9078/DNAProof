@@ -14,18 +14,29 @@ process.on('unhandledRejection', (reason: any, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
+// Suppress harmless ethers.js "filter not found" polling errors on public RPC nodes
+process.on('unhandledRejection', (reason: any, promise) => {
+  if (reason && reason?.message?.includes('filter not found')) return;
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Ethers v6 internally logs this specific coalesced error using both console.error and console.log
+const isEthersSpam = (args: any[]) => {
+  try {
+    const str = args.map(a => (a instanceof Error ? a.stack || a.message : String(a))).join(' ');
+    return str.includes('could not coalesce error') || str.includes('filter not found');
+  } catch (e) { return false; }
+};
+
 const originalConsoleError = console.error;
 console.error = (...args: any[]) => {
-  if (typeof args[0] === 'string' && args[0].includes('could not coalesce error') && args[0].includes('filter not found')) return;
+  if (isEthersSpam(args)) return;
   originalConsoleError(...args);
 };
 
 const originalConsoleLog = console.log;
 console.log = (...args: any[]) => {
-  if (typeof args[0] === 'string' && args[0].includes('could not coalesce error')) return;
-  // Ethers also prints the raw error stack trace right after
-  if (args[0] && args[0] instanceof Error && args[0].message.includes('filter not found')) return;
+  if (isEthersSpam(args)) return;
   originalConsoleLog(...args);
 };
 
