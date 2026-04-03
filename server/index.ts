@@ -90,7 +90,7 @@ app.use((req, res, next) => {
   });
 
   // The frontend is now handled by Next.js, which proxies /api requests to this Express server.
-  const port = 5001;
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5001;
   
   server.listen(port, "0.0.0.0", () => {
     log(`serving on port ${port}`);
