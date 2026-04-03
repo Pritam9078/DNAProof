@@ -56,9 +56,7 @@ export default function NotificationBell() {
     if (connected && address) {
       fetchNotifications();
 
-      const socketUrl = typeof window !== 'undefined' 
-        ? `${window.location.protocol}//${window.location.hostname}:5001`
-        : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+      const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 
       const newSocket = io(socketUrl, {
         withCredentials: true,
