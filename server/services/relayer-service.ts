@@ -1,7 +1,12 @@
 import { ethers } from 'ethers';
+import fs from 'fs';
+import path from 'path';
 import { fabricService } from '../fabric-service.ts';
 import { nftService } from './nft-service.ts';
-import NFT_ABI from '../../lib/abis/DNAProofNFT.json' assert { type: 'json' };
+
+const nftAbiPath = path.join(process.cwd(), 'lib/abis/DNAProofNFT.json');
+const NFT_ABI_FILE = JSON.parse(fs.readFileSync(nftAbiPath, 'utf8'));
+const NFT_ABI = NFT_ABI_FILE.abi || NFT_ABI_FILE;
 
 const NFT_ADDRESS = process.env.NEXT_PUBLIC_NFT_ADDRESS || '';
 const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';

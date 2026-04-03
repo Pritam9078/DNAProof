@@ -1,4 +1,6 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 import { storage } from "../storage";
 import { ethers } from 'ethers';
 
@@ -8,7 +10,8 @@ const router = express.Router();
 async function verifyDocumentOnChain(sha256Hash: string) {
   const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';
   const REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_REGISTRY_ADDRESS || '';
-  const RegistryABI = (await import('../../lib/abis/DNAProofRegistry.json', { assert: { type: 'json' } })).default;
+  const registryPath = path.join(process.cwd(), 'lib/abis/DNAProofRegistry.json');
+  const RegistryABI = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const REGISTRY_ABI = (RegistryABI as any).abi || RegistryABI;
 
   if (!REGISTRY_ADDRESS) return null;
