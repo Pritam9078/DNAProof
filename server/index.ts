@@ -14,11 +14,7 @@ process.on('unhandledRejection', (reason: any, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-// Suppress harmless ethers.js "filter not found" polling errors on public RPC nodes
-process.on('unhandledRejection', (reason: any, promise) => {
-  if (reason && reason?.message?.includes('filter not found')) return;
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
+
 
 // Ethers v6 internally logs this specific coalesced error using both console.error and console.log
 const isEthersSpam = (args: any[]) => {
