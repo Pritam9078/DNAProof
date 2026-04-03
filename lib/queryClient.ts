@@ -2,6 +2,17 @@ import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
+    if (res.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth_token');
+        // Optional: redirect to login if not already on it
+        if (!window.location.pathname.includes('/auth')) {
+          window.location.href = '/auth/login';
+        }
+      }
+      throw new Error("401: Session expired. Please log in again.");
+    }
+    
     if (res.status === 429) {
       throw new Error("429: Too many requests. Please wait a moment and try again.");
     }
@@ -11,8 +22,12 @@ async function throwIfResNotOk(res: Response) {
       const data = await res.json();
       message = data.message || message;
     } catch (e) {
-      const text = await res.text();
-      message = text || message;
+      try {
+        const text = await res.text();
+        message = text || message;
+      } catch (innerE) {
+        message = message || "Unknown error";
+      }
     }
     
     throw new Error(`${res.status}: ${message}`);

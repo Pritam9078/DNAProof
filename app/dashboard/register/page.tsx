@@ -178,19 +178,20 @@ export default function RegisterDocumentPage() {
         toast.loading("Issuing Dual-Chain NFT...", { id: loadingToast });
         await apiRequest("POST", "/api/nft/mint", {
           docId: targetId,
-          userAddress: address,
-          docHash: hash,
-          metadataURI: `ipfs://${ipfsCid}`,
+          recipient: address,
           signature: mintSig,
-          authMessage
+          message: authMessage
         });
-        toast.success("NFT Minted & Authorized!", { id: loadingToast });
+        toast.success("Document issued & Minted as NFT!", { id: loadingToast });
+      } else {
+        toast.success("Document issued & anchored on blockchain!", { id: loadingToast });
       }
 
       setFile(null);
     } catch (error: any) {
-      console.error("Registration failed", error);
-      toast.error(error.message || "Registration failed", { id: loadingToast });
+      console.error("Registration full flow error:", error);
+      const errorMessage = error.message || "Failed to complete one or more steps in the registration process.";
+      toast.error(errorMessage, { id: loadingToast, duration: 6000 });
     } finally {
       setIsSubmitting(false);
     }

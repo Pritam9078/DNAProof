@@ -131,11 +131,11 @@ router.post("/register-document", authenticateToken, upload.single('file'), asyn
     const file = req.file;
     
     if (file) {
-      const MAX_SIZE = 10 * 1024 * 1024;
+      const MAX_SIZE = 50 * 1024 * 1024;
       const validTypes = ['application/pdf', 'image/png', 'image/jpeg'];
       
       if (file.size > MAX_SIZE) {
-        return res.status(400).json({ message: "File exceeds 10MB limit" });
+        return res.status(400).json({ message: "File exceeds 50MB limit" });
       }
       if (!validTypes.includes(file.mimetype)) {
         return res.status(400).json({ message: "Invalid file type. Only PDF, PNG, and JPEG are allowed." });

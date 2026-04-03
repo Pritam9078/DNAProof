@@ -12,36 +12,46 @@ if (!PINATA_JWT) {
  * @returns IPFS content identifier (CID)
  */
 export async function uploadToIPFS(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const metadata = JSON.stringify({
+    name: file.name,
+  });
+  formData.append('pinataMetadata', metadata);
+
+  const options = JSON.stringify({
+    cidVersion: 1,
+  });
+  formData.append('pinataOptions', options);
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
   try {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const metadata = JSON.stringify({
-      name: file.name,
-    });
-    formData.append('pinataMetadata', metadata);
-
-    const options = JSON.stringify({
-      cidVersion: 1,
-    });
-    formData.append('pinataOptions', options);
-
     const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${PINATA_JWT}`,
+        'Authorization': `Bearer ${PINATA_JWT}`,
       },
       body: formData,
+      signal: controller.signal
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Pinata upload failed: ${errorData.error || response.statusText}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`Pinata upload failed (${response.status}): ${errorData.error || response.statusText}`);
     }
 
     const result = await response.json();
     return result.IpfsHash;
   } catch (error: any) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('IPFS upload timed out after 15 seconds. Please try a smaller file or check your connection.');
+    }
     console.error('Error uploading to IPFS via Pinata:', error);
     throw new Error('Failed to upload to IPFS: ' + error.message);
   }
