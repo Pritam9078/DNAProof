@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { RoleGuard } from "@/components/auth/RoleGuard";
 import { FileUpload } from "@/components/forms/FileUpload";
@@ -427,8 +428,22 @@ export default function RegisterDocumentPage() {
                         {/* QR Code */}
                         {qrCode && (
                           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="space-y-3">
-                            <div className="p-4 rounded-2xl bg-white flex flex-col items-center gap-3">
-                              <img src={qrCode} alt="Verification QR Code" className="w-full max-w-[180px] rounded-lg" />
+                            <div className="p-4 rounded-2xl bg-white flex flex-col items-center gap-3 relative group">
+                              <div className="relative">
+                                <img src={qrCode} alt="Verification QR Code" className="w-full max-w-[180px] rounded-lg" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg border-2 border-white overflow-hidden p-1.5">
+                                    <div className="relative w-full h-full">
+                                      <Image 
+                                        src="/logo.png" 
+                                        alt="Logo" 
+                                        fill 
+                                        className="object-contain"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                               <p className="text-[10px] font-black uppercase tracking-widest text-black/60 flex items-center gap-1">
                                 <QrCode className="w-3 h-3" /> Scan to Verify
                               </p>

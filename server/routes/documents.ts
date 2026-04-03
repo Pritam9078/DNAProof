@@ -209,7 +209,7 @@ router.post("/register-document", authenticateToken, upload.single('file'), asyn
       errorCorrectionLevel: 'H',
       width: 300,
       margin: 2,
-      color: { dark: '#000000', light: '#FFFFFF' },
+      color: { dark: '#3b82f6', light: '#FFFFFF' },
     });
 
     const issuerDID = (user as any).did || DIDService.resolveAddressToDID(issuerAddress);
