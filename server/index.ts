@@ -8,6 +8,15 @@ import { setupBlockchainListeners } from "./blockchain-listeners.ts";
 
 const app = express();
 
+// Suppress harmless ethers.js "filter not found" polling errors on public RPC nodes
+process.on('unhandledRejection', (reason: any, promise) => {
+  if (reason && reason.message && reason.message.includes('filter not found')) {
+    // Silently ignore to avoid console spam
+    return;
+  }
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // NUCLEAR CORS: Allow all origins and handle all preflights
 app.use((req, res, next) => {
   const origin = req.headers.origin as string;
