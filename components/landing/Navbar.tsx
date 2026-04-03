@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Menu, X, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const Navbar = () => {
   const { connected, isAuthenticated, address, connect, disconnect } = useWallet();
@@ -47,8 +48,13 @@ export const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center neon-glow group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary/20">
-            <Shield className="text-white w-6 h-6" />
+          <div className="relative w-12 h-12 flex-shrink-0 neon-glow group-hover:scale-110 transition-all duration-300">
+            <Image 
+              src="/logo.png" 
+              alt="DNAProof Logo" 
+              fill 
+              className="object-contain drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-2xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/40 leading-none">

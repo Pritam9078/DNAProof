@@ -11,6 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "DNAProof | Hybrid Document Verification",
   description: "Secure, scalable, and privacy-preserving document verification using Ethereum and Hyperledger Fabric.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

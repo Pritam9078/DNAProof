@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, 
@@ -109,16 +110,26 @@ export const Sidebar = () => {
       {/* Header */}
       <div className={cn("p-6 flex items-center justify-between shrink-0 h-20", collapsed ? "justify-center" : "")}>
         {!collapsed && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-              <Shield className="text-white w-5 h-5" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3">
+            <div className="relative w-10 h-10 flex-shrink-0">
+              <Image 
+                src="/logo.png" 
+                alt="DNAProof Logo" 
+                fill 
+                className="object-contain drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+              />
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">DNAProof</span>
           </motion.div>
         )}
         {collapsed && (
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-            <Shield className="text-white w-6 h-6" />
+          <div className="relative w-10 h-10">
+             <Image 
+                src="/logo.png" 
+                alt="DNAProof Logo" 
+                fill 
+                className="object-contain drop-shadow-[0_0_10px_rgba(59,130,246,0.3)] hover:scale-110 transition-transform"
+              />
           </div>
         )}
         <button
