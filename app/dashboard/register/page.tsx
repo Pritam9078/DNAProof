@@ -167,6 +167,7 @@ export default function RegisterDocumentPage() {
       if (autoClassify && targetId) {
         toast.loading("Analyzing with DNA-AI...", { id: loadingToast });
         await apiRequest("POST", "/api/ai/classify", { docId: targetId });
+        toast.success("AI Analysis complete!", { id: loadingToast });
       }
 
       if (mintAsNFT && targetId) {

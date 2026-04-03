@@ -32,7 +32,7 @@ router.post("/ai/classify", authenticateToken, async (req, res) => {
     try {
       const gatewayUrl = `https://gateway.pinata.cloud/ipfs/${doc.cid}`;
       console.log(`[AI-Classify] Fetching file from IPFS: ${gatewayUrl}`);
-      const response = await axios.get(gatewayUrl, { responseType: 'arraybuffer' });
+      const response = await axios.get(gatewayUrl, { responseType: 'arraybuffer', timeout: 5000 });
       buffer = Buffer.from(response.data);
     } catch (fetchError: any) {
       console.error(`[AI-Classify] Failed to fetch from IPFS: ${fetchError.message}`);
