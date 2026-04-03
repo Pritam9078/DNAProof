@@ -126,9 +126,9 @@ router.get("/users/wallet/:address", async (req: express.Request, res: express.R
 
     const issuerProfile = await IssuerProfile.findOne({ walletAddress: walletAddress.toLowerCase() });
     return res.status(200).json({ ...user.toObject(), issuerProfile });
-  } catch (error) {
+  } catch (error: any) {
     console.error("DEBUG: /api/users/wallet/:address error:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error", details: error?.message || String(error) });
   }
 });
 
