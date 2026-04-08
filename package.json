@@ -10,7 +10,7 @@
     "dev": "next dev -p 3002 -H 0.0.0.0 --webpack",
     "server:dev": "tsx watch server/index.ts",
     "dev:all": "concurrently \"npm run dev\" \"npm run server:dev\"",
-    "build": "next build --webpack && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build": "npm run build -w @dnaproof/sdk && next build --webpack && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "next start",
     "check": "tsc",
     "db:push": "drizzle-kit push"
