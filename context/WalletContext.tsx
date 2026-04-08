@@ -110,6 +110,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
               }
             } catch (e) {
               console.error("Error verifying token on mount:", e);
+              localStorage.removeItem("auth_token");
               setIsAuthenticated(false);
             }
           }
@@ -257,10 +258,11 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       const formattedBalance = ethers.formatEther(balance);
       
       // Fetch Roles directly from the smart contract!
-      const roles = await getUserRoles(address);
-      
-      // Fetch database user
-      const dbUser = await tryCreateUser(address);
+      // Fetch Roles and database user in parallel to speed up login
+      const [roles, dbUser] = await Promise.all([
+        getUserRoles(address),
+        tryCreateUser(address)
+      ]);
       
       // Determine wallet type
       let walletType = "Unknown";
